@@ -1,68 +1,116 @@
-# 📚 Okuma Kitabı Sanal Kütüphane — LibrisTrack Pro
+# 📚 LibrisTrack Pro - Sanal Okuma Kütüphanesi ve Okuma Takip Sistemi
 
-Okuduğun kitapları takip et, okuma seansı ekle, hedef belirle ve istatistiklerini Chart.js grafiklerinde izle. Personel kayıt formu, karanlık/açık tema ve PDF/Excel raporlama özellikli kapsamlı bir platform.
+LibrisTrack Pro, kitap okuma alışkanlıklarınızı profesyonelce takip etmeniz, kişisel okuma hedefleri belirlemeniz ve okuma istatistiklerinizi görselleştirmeniz için geliştirilmiş modern, şık ve kullanıcı dostu bir **ASP.NET Core 8.0 MVC** web uygulamasıdır.
 
-## 🚀 Özellikler
+Premium tasarımı, temaya duyarlı dinamik grafikleri ve gelişmiş raporlama yetenekleri ile okuma yolculuğunuzu baştan sona keyifli bir deneyime dönüştürür.
 
-- 📖 Kitap ekleme, düzenleme, silme (Durum: Okunuyor / Bitti / Bekliyor)
-- ⏱️ Okuma seansı takibi (sayfa bazlı)
-- 🎯 Okuma hedefi belirleme
-- 📊 Chart.js ile son 7 günlük okuma grafiği
-- 🌙 Karanlık / Açık tema (tek tıkla geçiş)
-- 📥 Excel ve PDF çıktısı (kitap listesi)
-- 👤 Personel Kayıt Formu (tam doğrulamalı, veritabanı destekli)
-- 🗂️ Portfolyo sayfası (tüm projeler)
+---
+
+## ✨ Öne Çıkan Özellikler
+
+### 1. 🌓 Göz Yormayan Gece Modu (Dark Mode)
+* **Modern Entegrasyon:** CSS Değişkenleri (`:root` & `[data-theme="dark"]`) ve saf JavaScript (Vanilla JS) kullanılarak kusursuz bir karanlık mod desteği eklendi.
+* **Akıllı Bellek:** Kullanıcının tema tercihi tarayıcı hafızasında (`localStorage`) saklanır, böylece sayfalar arası geçişlerde ve sonraki ziyaretlerde tercih otomatik olarak hatırlanır.
+* **Görsel Uyum:** Koyu moda geçildiğinde sadece arka plan renkleri değil; kartlar, gölgeler, sınırlar ve hatta Chart.js grafikleri bile anında koyu tema renk paletine adapte olur.
+
+### 2. 📊 Dinamik Dashboard Grafiği & Detaylı İstatistikler
+* **Chart.js Entegrasyonu:** Okuma verilerinizi dinamik olarak işleyen interaktif bir çizgi grafiği (`readingChart`) entegre edilmiştir.
+* **Haftalık Performans:** Son 7 gün boyunca okuduğunuz sayfa sayıları gün bazında veritabanından çekilerek grafiğe dökülür.
+* **Akıllı Renk Paleti:** Grafik çizgileri ve ızgaraları, açık ve koyu tema geçişlerinde göz zevkini bozmayacak şekilde dinamik renk güncellemelerine (`getChartColors()`) sahiptir.
+* **Özet İstatistik Kartları:** Toplam Kitap Sayısı, Biten Kitaplar, Aktif Okunanlar ve Haftalık Toplam Okunan Sayfa sayıları anlık olarak dashboard üzerinde gösterilir.
+
+### 3. 📄 Hızlı ve Şık Raporlama (Excel / PDF Çıktısı)
+* **Excel Çıktısı (`ClosedXML`):** Kütüphanenizde kayıtlı olan tüm kitapların ID, Başlık, Yazar, Tür, Toplam Sayfa, Okunan Sayfa ve Durum bilgilerini içeren profesyonel bir Excel tablosunu (`Kitap_Listesi.xlsx`) tek tıkla indirebilirsiniz.
+* **PDF Çıktısı (`QuestPDF`):** Kütüphanenizin şık bir sayfa düzenine, özel başlığa, indigo renk vurgularına ve otomatik sayfa numaralandırmasına sahip PDF belgesini (`Kitap_Listesi.pdf`) anında oluşturup indirebilirsiniz.
+* **Kapsamlı Veri Sunumu:** Her iki çıktı türünde de kitapların kaçıncı sayfasında kaldığınız ve toplam sayfa sayısı (`Okunan/Toplam`) net bir şekilde listelenir.
+
+### 4. 🚀 Kullanıcı Dostu Onboarding & Hedef Takibi
+* **Onboarding Deneyimi:** Uygulama ilk kez açıldığında kullanıcıyı şık bir karşılama ekranı karşılar. Kullanıcı adını ve aylık okuma hedefini belirleyerek sisteme hızlıca giriş yapar.
+* **Kişisel Okuma Hedefleri (Goals):** Tarih aralıkları ve hedef sayfa sayısı belirleyerek özel hedefler oluşturabilirsiniz. Oturum kaydettikçe hedeflerinizdeki ilerleme yüzdesi otomatik olarak güncellenir.
+* **Okuma Oturumları (Reading Sessions):** Okuduğunuz kitapların başlangıç ve bitiş sayfalarını, okuma sürelerini kaydederek kütüphanenizi canlı tutabilirsiniz.
+
+---
+
+## 📸 Ekran Görüntüleri
+
+> [!TIP]
+> Projenizi GitHub'a yüklemeden önce kendi ekran görüntülerinizi alıp `wwwroot/images/` klasörüne ekleyerek aşağıdaki yolları güncelleyebilirsiniz.
+
+#### 1. Dashboard (Açık Tema)
+![Dashboard Açık Tema](https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&q=80&w=800)
+*(Açık tema altında dinamik Chart.js grafiği, istatistik kartları ve aktif okunan kitaplar)*
+
+#### 2. Dashboard (Karanlık Tema)
+![Dashboard Karanlık Tema](https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&q=80&w=800)
+*(Tek tıkla geçiş yapılan koyu tema tasarımı ve temaya duyarlı koyu mod grafiği)*
+
+#### 3. Excel ve PDF Çıktı Butonları
+![Raporlama Butonları](https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800)
+*(Dashboard üzerinde tek tıklamayla indirilebilen profesyonel veri raporlama menüsü)*
+
+---
 
 ## 🛠️ Kullanılan Teknolojiler
 
-| Katman | Teknoloji |
-|--------|-----------|
-| Backend | ASP.NET Core MVC (.NET 8) |
-| ORM | Entity Framework Core |
-| Veritabanı | SQL Server LocalDB |
-| Frontend | Bootstrap 5, Bootstrap Icons |
-| Grafik | Chart.js |
-| Excel | EPPlus |
-| PDF | iText7 |
+| Katman | Teknoloji / Kütüphane | Açıklama |
+| :--- | :--- | :--- |
+| **Backend Framework** | `ASP.NET Core 8.0 MVC` | Güçlü, güvenli ve ölçeklenebilir MVC mimarisi. |
+| **Database & ORM** | `MS SQL Server` & `EF Core` | Code-First yaklaşımı ile ilişkisel veri tabanı yönetimi. |
+| **Excel Export** | `ClosedXML` | Hızlı ve güvenilir Excel dosyası (.xlsx) üretimi. |
+| **PDF Export** | `QuestPDF` | Modern, şablonlu ve vektörel PDF belgesi üretimi. |
+| **Grafik Kütüphanesi** | `Chart.js` | İstemci tarafında temaya duyarlı çizgi grafiği çizimi. |
+| **UI Framework & Tasarım** | `Bootstrap 5` & `Bootstrap Icons` | Responsive grid sistemi ve şık bileşen kütüphanesi. |
+| **Stil ve Tema Yönetimi** | `Vanilla CSS3` & `JavaScript` | Custom Properties (Değişkenler) ile pürüzsüz karanlık tema geçişi. |
 
-## ⚙️ Kurulum
+---
 
-### Gereksinimler
-- .NET 8 SDK
-- SQL Server LocalDB (Visual Studio ile birlikte gelir)
+## 💻 Kurulum ve Çalıştırma
 
-### Adımlar
+Projeyi yerel bilgisayarınızda ayağa kaldırmak için aşağıdaki adımları sırasıyla uygulayabilirsiniz:
 
+### 1. Ön Gereksinimler
+* Bilgisayarınızda [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) kurulu olmalıdır.
+* Veritabanı için **LocalDB** veya **MS SQL Server** kurulu ve çalışır durumda olmalıdır.
+
+### 2. Projeyi Klonlayın
 ```bash
-# Repoyu klonla
-git clone https://github.com/taklaci59/okuma-kitabi-sanal-kutuphane.git
-cd okuma-kitabi-sanal-kutuphane
+git clone https://github.com/kullaniciadi/okumatakibisanalkutuphane.git
+cd okumatakibisanalkutuphane
+```
 
-# Veritabanını oluştur ve migration'ları uygula
+### 3. Veritabanı Ayarlarını Kontrol Edin
+`appsettings.json` dosyasını açarak `DefaultConnection` bağlantı dizesinin SQL Server yapınıza uygun olduğunu doğrulayın:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=LibrisTrackProDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+}
+```
+
+### 4. Veritabanını Oluşturun (Migrations)
+Proje kök dizininde bir terminal (PowerShell veya CMD) açarak veritabanı tablolarını otomatik oluşturmak için şu komutu çalıştırın:
+```bash
 dotnet ef database update
+```
+*(Eğer Entity Framework Core CLI yüklü değilse `dotnet tool install --global dotnet-ef` ile yükleyebilirsiniz.)*
 
-# Uygulamayı çalıştır
+### 5. Uygulamayı Başlatın
+Uygulamayı derlemek ve yerel geliştirme sunucusunda çalıştırmak için:
+```bash
 dotnet run
 ```
+Konsolda yazan adresleri (örneğin `http://localhost:5000` veya `https://localhost:5001`) tarayıcınızda açarak kütüphanenizi kullanmaya başlayabilirsiniz!
 
-Tarayıcıda `https://localhost:5001` adresini aç.
+---
 
-## 🗄️ Veritabanı
+## 📁 Proje Klasör Yapısı
 
-`appsettings.json` içindeki bağlantı dizesi:
-```
-Server=(localdb)\mssqllocaldb;Database=LibrisTrackProDb;Trusted_Connection=True
-```
+* **`Controllers/`**: Uygulama mantığı ve yönlendirmelerin yönetildiği kontrolcüler (`Books`, `Home`, `Onboarding`, `Reading`).
+* **`Models/`**: Entity sınıfları (`Book`, `UserProfile`, `ReadingSession`, `Goal`).
+* **`Views/`**: Kullanıcı arayüz tasarımları ve Razor sayfaları.
+* **`Services/`**: PDF ve Excel çıktılarını dinamik üreten `ExportService`.
+* **`wwwroot/css/site.css`**: Premium glassmorphism efektleri ve Dark Mode CSS değişkenleri.
+* **`wwwroot/js/site.js`**: Tema geçiş tetikleyicisi ve lokal depolama yönetimi.
 
-## 📋 Sayfalar
+---
 
-| Sayfa | Açıklama |
-|-------|----------|
-| Dashboard | İstatistikler, grafik, aktif kitaplar |
-| Kütüphanem | Tüm kitaplar, filtre, Excel/PDF çıktı |
-| Sınav Formu | Personel kayıt formu (veritabanı destekli) |
-| Portfolyo | Tüm projeler ve GitHub linkleri |
-
-## 👤 Geliştirici
-
-**Kıvanç** — [GitHub](https://github.com/taklaci59)
+⭐ Projeyi beğendiyseniz yıldız vermeyi unutmayın! 

@@ -352,7 +352,7 @@
 
                                     <!-- Yetenekler -->
                                     <div class="card p-3 border-0 bg-light bg-opacity-50 rounded-4 mb-3 shadow-none">
-                                        <label class="form-label fw-semibold mb-2">Uzmanlık Yetenekleri <span class="text-danger">*</span> <small class="text-muted">(En az bir tane)</small></label>
+                                        <label class="form-label fw-semibold">Uzmanlık Yetenekleri <span class="text-danger">*</span> <small class="text-muted">(En az bir tane)</small></label>
                                         <div class="row g-2">
                                             @{
                                                 var skills = new List<string> { "Javascript", "C#", "SQL", "PHP", "HTML", "CSS", "Bootstrap", "ASP.NET MVC" };
@@ -606,7 +606,8 @@
                 if (!birthDate.value) {
                     showError(birthDate, "Doğum tarihi zorunludur.");
                 } else {
-                    const selectedDate = new Date(birthDate.value);
+                    const parts = birthDate.value.split('-');
+                    const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
                     const today = new Date();
                     today.setHours(0,0,0,0);
                     if (selectedDate > today) {
@@ -657,7 +658,8 @@
                 if (!hireDate.value) {
                     showError(hireDate, "İşe giriş tarihi zorunludur.");
                 } else {
-                    const selectedDate = new Date(hireDate.value);
+                    const parts = hireDate.value.split('-');
+                    const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
                     const today = new Date();
                     today.setHours(0,0,0,0);
                     if (selectedDate > today) {

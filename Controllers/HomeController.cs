@@ -158,6 +158,12 @@ namespace okumatakibisanalkutuphane.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Portfolio()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

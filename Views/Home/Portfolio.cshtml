@@ -1,0 +1,276 @@
+@{
+    ViewData["Title"] = "Portfolyo";
+    var projects = new[]
+    {
+        new {
+            Name = "Film & Dizi Arşivi",
+            Description = "Kişisel film ve dizi koleksiyonunu yönetebileceğin, izleme durumunu takip edebileceğin ve puanlama yapabileceğin kapsamlı bir arşiv sistemi.",
+            Tech = new[] { "ASP.NET Core MVC", "Entity Framework Core", "SQL Server LocalDB", "Bootstrap 5" },
+            GitHub = "https://github.com/taklaci59/filmdiziarsivi",
+            Icon = "bi-film",
+            Color = "#e50914",
+            Gradient = "linear-gradient(135deg, #e50914, #b20710)"
+        },
+        new {
+            Name = "İlaç Takip Sistemi",
+            Description = "Kullanıcıların ilaçlarını düzenleyebildiği, kullanım zamanlarını takip edebildiği ve hatırlatıcılar oluşturabildiği kişisel sağlık yönetimi uygulaması.",
+            Tech = new[] { "ASP.NET Core MVC", "Entity Framework Core", "SQL Server LocalDB", "Bootstrap 5" },
+            GitHub = "https://github.com/taklaci59/ilac-takip-sistemi",
+            Icon = "bi-capsule-pill",
+            Color = "#10b981",
+            Gradient = "linear-gradient(135deg, #10b981, #059669)"
+        },
+        new {
+            Name = "QR Menü Sistemi",
+            Description = "Restoran ve kafeler için QR kod tabanlı dijital menü sistemi. Müşteriler QR kodu tarayarak menüyü görüntüler, işletme yöneticisi menü içeriğini kolayca günceller.",
+            Tech = new[] { "ASP.NET Core MVC", "QR Code API", "Entity Framework Core", "SQL Server LocalDB" },
+            GitHub = "https://github.com/taklaci59/qrmenusistemi",
+            Icon = "bi-qr-code-scan",
+            Color = "#f59e0b",
+            Gradient = "linear-gradient(135deg, #f59e0b, #d97706)"
+        },
+        new {
+            Name = "Yemek Tarifi Sitesi",
+            Description = "Spoonacular API entegrasyonu ile binlerce yemek tarifine erişebileceğin, tarif arayabileceğin ve favori tariflerini kaydedebileceğin modern bir gastronomi platformu.",
+            Tech = new[] { "ASP.NET Core MVC", "Spoonacular API", "Entity Framework Core", "SQL Server LocalDB" },
+            GitHub = "https://github.com/taklaci59/Yemek-Tarifi-Sitesi",
+            Icon = "bi-egg-fried",
+            Color = "#f97316",
+            Gradient = "linear-gradient(135deg, #f97316, #ea580c)"
+        },
+        new {
+            Name = "İkinci El Websitesi",
+            Description = "Kullanıcıların ikinci el ürün ilan verebildiği, mesajlaşabildiği ve ürün arayabildiği tam kapsamlı bir marketplace platformu.",
+            Tech = new[] { "ASP.NET Core MVC", "Entity Framework Core", "SQL Server LocalDB", "Bootstrap 5" },
+            GitHub = "https://github.com/taklaci59/ikinci-el-websitesi",
+            Icon = "bi-shop",
+            Color = "#3b82f6",
+            Gradient = "linear-gradient(135deg, #3b82f6, #2563eb)"
+        },
+        new {
+            Name = "Sanal Kütüphane",
+            Description = "Okuduğun kitapları takip et, okuma seansı ekle, hedef belirle ve istatistiklerini Chart.js grafiklerinde izle. Personel kayıt formu, karanlık/açık tema ve PDF/Excel raporlama özellikli kapsamlı bir platform.",
+            Tech = new[] { "ASP.NET Core MVC", "Chart.js", "Entity Framework Core", "SQL Server LocalDB", "EPPlus", "iText7" },
+            GitHub = "https://github.com/taklaci59/okuma-kitabi-sanal-kutuphane",
+            Icon = "bi-journal-bookmark-fill",
+            Color = "#7c3aed",
+            Gradient = "linear-gradient(135deg, #7c3aed, #5b21b6)"
+        }
+    };
+}
+
+<style>
+    .portfolio-hero {
+        background: var(--gradient-1);
+        border-radius: 24px;
+        padding: 3rem 2rem;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .portfolio-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.18) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 50%, rgba(99,102,241,0.15) 0%, transparent 60%);
+        pointer-events: none;
+    }
+    .portfolio-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: var(--gradient-1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .project-card {
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        overflow: hidden;
+        background: var(--card-bg);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .project-card-header {
+        padding: 2rem 1.75rem 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .project-icon-wrap {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .project-card-body {
+        padding: 0 1.75rem 1.75rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .project-desc {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        line-height: 1.65;
+        flex: 1;
+        margin-bottom: 1.25rem;
+    }
+    .tech-badge {
+        display: inline-block;
+        padding: 0.28rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        background: var(--glass-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        margin: 0.18rem;
+    }
+    .project-card-footer {
+        padding: 1.25rem 1.75rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        gap: 0.75rem;
+    }
+    .btn-github {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 1.2rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        flex: 1;
+        justify-content: center;
+        color: #fff;
+    }
+    .btn-github:hover {
+        filter: brightness(1.15);
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .stats-strip {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        background: var(--gradient-1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+        line-height: 1;
+    }
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-top: 0.35rem;
+    }
+</style>
+
+<!-- Hero -->
+<div class="portfolio-hero">
+    <div class="mb-3">
+        <span class="badge rounded-pill px-3 py-2" style="background: rgba(124,58,237,0.15); color: #7c3aed; font-size:0.8rem; border: 1px solid rgba(124,58,237,0.3);">
+            <i class="bi bi-code-slash me-1"></i> ASP.NET Core MVC
+        </span>
+    </div>
+    <h1><i class="bi bi-briefcase-fill me-2"></i>Portfolyo</h1>
+    <p class="text-muted mt-2 mb-0" style="font-size:1.05rem; max-width:520px; margin:auto;">
+        Kıvanç'ın geliştirdiği ASP.NET Core MVC projeleri — her biri LocalDB destekli, EF Core migration'lı ve GitHub'da açık kaynak.
+    </p>
+</div>
+
+<!-- Stats Strip -->
+<div class="stats-strip">
+    <div class="stat-item">
+        <span class="stat-value">6</span>
+        <div class="stat-label">Proje</div>
+    </div>
+    <div class="stat-item">
+        <span class="stat-value">ASP.NET</span>
+        <div class="stat-label">Framework</div>
+    </div>
+    <div class="stat-item">
+        <span class="stat-value">LocalDB</span>
+        <div class="stat-label">Veritabanı</div>
+    </div>
+    <div class="stat-item">
+        <span class="stat-value">EF Core</span>
+        <div class="stat-label">ORM</div>
+    </div>
+    <div class="stat-item">
+        <span class="stat-value">GitHub</span>
+        <div class="stat-label">Açık Kaynak</div>
+    </div>
+</div>
+
+<!-- Project Cards Grid -->
+<div class="row g-4">
+    @foreach (var project in projects)
+    {
+        <div class="col-lg-4 col-md-6">
+            <div class="project-card">
+                <div class="project-card-header">
+                    <div class="project-icon-wrap" style="background: @project.Gradient">
+                        <i class="bi @project.Icon"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-0 fw-bold" style="font-size:1rem;">@project.Name</h5>
+                        <small class="text-muted">ASP.NET Core MVC</small>
+                    </div>
+                </div>
+                <div class="project-card-body">
+                    <p class="project-desc">@project.Description</p>
+                    <div class="mb-3">
+                        @foreach (var tech in project.Tech)
+                        {
+                            <span class="tech-badge">@tech</span>
+                        }
+                    </div>
+                </div>
+                <div class="project-card-footer">
+                    <a href="@project.GitHub" target="_blank" class="btn-github" style="background: @project.Gradient;">
+                        <i class="bi bi-github"></i> GitHub'da Gör
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Footer CTA -->
+<div class="text-center mt-5 pt-3">
+    <p class="text-muted mb-3">Tüm projeler <strong>SQL Server LocalDB</strong> üzerinde çalışır ve <strong>EF Core Migrations</strong> içerir.</p>
+    <a href="https://github.com/taklaci59" target="_blank" class="btn btn-lg rounded-pill px-4" style="background: var(--gradient-1); color:#fff; font-weight:600;">
+        <i class="bi bi-github me-2"></i>GitHub Profilim
+    </a>
+</div>
