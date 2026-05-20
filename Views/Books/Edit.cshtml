@@ -1,0 +1,67 @@
+@model okumatakibisanalkutuphane.Models.Book
+@{
+    ViewData["Title"] = "Kitabı Düzenle";
+}
+
+<div class="mb-4">
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-link text-decoration-none p-0 text-muted">
+        <i class="bi bi-arrow-left me-1"></i>Geri Dön
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-4">
+            <h3 class="fw-bold mb-4">Kitabı Düzenle</h3>
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Kitap Adı</label>
+                    <input asp-for="Title" class="form-control rounded-3" required />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Author" class="form-label">Yazar</label>
+                    <input asp-for="Author" class="form-control rounded-3" required />
+                    <span asp-validation-for="Author" class="text-danger small"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TotalPages" class="form-label">Toplam Sayfa</label>
+                        <input asp-for="TotalPages" class="form-control rounded-3" required />
+                        <span asp-validation-for="TotalPages" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CurrentPage" class="form-label">Mevcut Sayfa</label>
+                        <input asp-for="CurrentPage" class="form-control rounded-3" required />
+                        <span asp-validation-for="CurrentPage" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Genre" class="form-label">Tür</label>
+                    <input asp-for="Genre" class="form-control rounded-3" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label">Durum</label>
+                    <select asp-for="Status" class="form-select rounded-3">
+                        <option value="ToRead">Okunacak</option>
+                        <option value="Reading">Okunuyor</option>
+                        <option value="Finished">Bitti</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="ImageUrl" class="form-label">Kapak Görseli URL</label>
+                    <input asp-for="ImageUrl" class="form-control rounded-3" />
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary rounded-pill py-2 shadow">Değişiklikleri Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

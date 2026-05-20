@@ -1,0 +1,92 @@
+@model IEnumerable<okumatakibisanalkutuphane.Models.Book>
+@{
+    ViewData["Title"] = "Kütüphanem";
+}
+
+<div class="row align-items-center mb-5">
+    <div class="col-md-8">
+        <h1 class="display-6 fw-bold mb-1"><span class="text-gradient">Kütüphanem</span> 📚</h1>
+        <p class="text-muted">Tüm kitapların ve okuma durumların burada listelenir.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <button class="btn btn-primary rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addBookModal">
+            <i class="bi bi-plus-lg me-2"></i>Yeni Kitap Ekle
+        </button>
+    </div>
+</div>
+
+<div class="row g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm hover-lift overflow-hidden">
+                <div class="position-relative">
+                    <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400" : item.ImageUrl)" class="card-img-top" style="height: 300px; object-fit: cover;" alt="@item.Title">
+                    <div class="position-absolute top-0 end-0 p-2">
+                        <span class="badge @(item.Status == "Finished" ? "bg-success" : item.Status == "Reading" ? "bg-primary" : "bg-secondary") rounded-pill px-3 shadow">
+                            @(item.Status == "Finished" ? "Bitti" : item.Status == "Reading" ? "Okunuyor" : "Okunacak")
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="fw-bold mb-1 text-truncate">@item.Title</h5>
+                    <p class="text-muted small mb-3">@item.Author</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">İlerleme</small>
+                        <small class="fw-bold text-primary">%@item.ProgressPercentage</small>
+                    </div>
+                    <div class="progress mb-3" style="height: 6px;">
+                        <div class="progress-bar" role="progressbar" style="width: @item.ProgressPercentage%"></div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm rounded-pill">Detayları Gör</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Add Book Modal -->
+<div class="modal fade" id="addBookModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass border-0 shadow">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">Yeni Kitap Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="Create" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Kitap Adı</label>
+                        <input type="text" name="Title" class="form-control rounded-3" placeholder="Örn: Nutuk" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Yazar</label>
+                        <input type="text" name="Author" class="form-control rounded-3" placeholder="Örn: Mustafa Kemal Atatürk" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Toplam Sayfa</label>
+                            <input type="number" name="TotalPages" class="form-control rounded-3" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tür</label>
+                            <input type="text" name="Genre" class="form-control rounded-3" placeholder="Örn: Tarih">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Kapak Görseli URL (Opsiyonel)</label>
+                        <input type="url" name="ImageUrl" class="form-control rounded-3" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 shadow">Kitabı Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

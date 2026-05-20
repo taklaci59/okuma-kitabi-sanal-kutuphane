@@ -1,0 +1,103 @@
+@model okumatakibisanalkutuphane.Models.Book
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Okuma Oturumu";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <div class="card p-5 shadow-neon animate-pulse">
+            <h5 class="text-muted text-uppercase mb-2">Şu an Okunan:</h5>
+            <h1 class="fw-bold mb-4 text-neon">@Model.Title</h1>
+            
+            <!-- Timer Display -->
+            <div class="display-1 fw-bold mb-4" id="timer">00:00:00</div>
+            
+            <div id="controls">
+                <button id="startBtn" class="btn btn-lg btn-success px-5 py-3 rounded-pill shadow">
+                    <i class="bi bi-play-fill"></i> Okumaya Başla
+                </button>
+                <button id="finishBtn" class="btn btn-lg btn-danger px-5 py-3 rounded-pill shadow d-none">
+                    <i class="bi bi-stop-fill"></i> Okumayı Bitir
+                </button>
+            </div>
+
+            <!-- Finish Form (Hidden initially) -->
+            <div id="finishForm" class="mt-5 text-start d-none animate-fade-in">
+                <hr class="border-secondary mb-4">
+                <h4 class="mb-3">Harika! Kaçıncı sayfaya geldin?</h4>
+                <form asp-action="Finish" method="post">
+                    <input type="hidden" name="bookId" value="@Model.Id">
+                    <input type="hidden" name="startTime" id="startTimeInput">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small">Başlangıç Sayfası</label>
+                            <input type="number" name="startPage" value="@ViewBag.LastPage" class="form-control bg-dark border-secondary text-white" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-white">Bitiş Sayfası</label>
+                            <input type="number" name="endPage" class="form-control bg-dark border-secondary text-white" placeholder="@Model.TotalPages üzerinden..." required>
+                        </div>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-neon py-3">Oturumu Kaydet <i class="bi bi-save ms-2"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let startTime;
+        let timerInterval;
+
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('startBtn');
+        const finishBtn = document.getElementById('finishBtn');
+        const finishForm = document.getElementById('finishForm');
+        const startTimeInput = document.getElementById('startTimeInput');
+
+        startBtn.addEventListener('click', () => {
+            startTime = new Date();
+            startTimeInput.value = startTime.toISOString();
+            startBtn.classList.add('d-none');
+            finishBtn.classList.remove('d-none');
+            
+            timerInterval = setInterval(updateTimer, 1000);
+        });
+
+        finishBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            finishBtn.classList.add('d-none');
+            finishForm.classList.remove('d-none');
+        });
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startTime;
+            
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            
+            timerDisplay.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    </script>
+    <style>
+        .shadow-neon { box-shadow: 0 0 30px rgba(176, 38, 255, 0.2); }
+        .animate-pulse { animation: pulse 2s infinite; }
+        @@keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+    </style>
+}

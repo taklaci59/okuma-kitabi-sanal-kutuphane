@@ -1,0 +1,61 @@
+@model okumatakibisanalkutuphane.Models.Book
+@{
+    ViewData["Title"] = "Yeni Kitap Ekle";
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="btn btn-link text-decoration-none p-0 text-muted">
+        <i class="bi bi-arrow-left me-1"></i>Kütüphaneye Dön
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-4">
+            <h3 class="fw-bold mb-4">Yeni Kitap Ekle</h3>
+            
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    Lütfen tüm zorunlu alanları doğru doldurduğunuzdan emin olun.
+                </div>
+            }
+
+            <form asp-action="Create" method="post">
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Kitap Adı</label>
+                    <input asp-for="Title" class="form-control rounded-3" required />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Author" class="form-label">Yazar</label>
+                    <input asp-for="Author" class="form-control rounded-3" required />
+                    <span asp-validation-for="Author" class="text-danger small"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TotalPages" class="form-label">Toplam Sayfa</label>
+                        <input asp-for="TotalPages" class="form-control rounded-3" required />
+                        <span asp-validation-for="TotalPages" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Genre" class="form-label">Tür</label>
+                        <input asp-for="Genre" class="form-control rounded-3" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ImageUrl" class="form-label">Kapak Görseli URL (Opsiyonel)</label>
+                    <input asp-for="ImageUrl" type="url" class="form-control rounded-3" />
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary rounded-pill py-2 shadow">Kitabı Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

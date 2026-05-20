@@ -1,0 +1,960 @@
+@model okumatakibisanalkutuphane.Models.PersonnelRegistration
+@{
+    ViewData["Title"] = "Personel Yönetim Paneli";
+    var success = ViewBag.Success as bool?;
+    var submittedData = ViewBag.SubmittedData as okumatakibisanalkutuphane.Models.PersonnelRegistration;
+    var photoPath = ViewBag.UploadedPhotoPath as string;
+    var personnelList = ViewBag.PersonnelList as List<okumatakibisanalkutuphane.Models.PersonnelProfile> ?? new List<okumatakibisanalkutuphane.Models.PersonnelProfile>();
+}
+
+<div class="container py-3">
+    <!-- Top Header -->
+    <div class="row mb-4 animate-fade-in">
+        <div class="col-12 text-center">
+            <h1 class="display-6 fw-bold mb-1 text-gradient">Personel Kayıt Formu</h1>
+            <p class="text-muted">Personel kayıt işlemlerini, veri doğrulama kuralları ve veritabanı kaydıyla yönetin.</p>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="row mb-4 justify-content-center animate-fade-in">
+        <div class="col-lg-10">
+            <ul class="nav nav-pills nav-fill glass p-1 border-0 rounded-4" id="personnelTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active rounded-3 py-2.5 fw-bold" id="form-tab" data-bs-toggle="tab" data-bs-target="#form-pane" type="button" role="tab" aria-controls="form-pane" aria-selected="true">
+                        <i class="bi bi-person-plus-fill me-2"></i>Yeni Personel Kaydı
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-3 py-2.5 fw-bold position-relative" id="list-tab" data-bs-toggle="tab" data-bs-target="#list-pane" type="button" role="tab" aria-controls="list-pane" aria-selected="false">
+                        <i class="bi bi-people-fill me-2"></i>Kayıtlı Personel Listesi
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="margin-left: -20px; margin-top: 8px;">
+                            @personnelList.Count
+                        </span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-content" id="personnelTabsContent">
+        
+        <!-- Tab 1: Form Pane -->
+        <div class="tab-pane fade show active" id="form-pane" role="tabpanel" aria-labelledby="form-tab" tabindex="0">
+            
+            @if (success == true && submittedData != null)
+            {
+                <!-- Success ID Card Visualization -->
+                <div class="row justify-content-center mb-5">
+                    <div class="col-lg-10 col-xl-8">
+                        <div class="card border-0 shadow-lg p-0 overflow-hidden text-start animate-fade-in">
+                            <!-- Card Header / Banner -->
+                            <div class="bg-gradient-header py-4 px-4 text-white position-relative">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="fw-bold mb-0">LibrisTrack Pro</h4>
+                                        <small class="text-white-50">RESMİ PERSONEL KİMLİK KARTI</small>
+                                    </div>
+                                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-2 fs-7 rounded-pill">
+                                        <i class="bi bi-shield-check me-1"></i>Veritabanına Kaydedildi
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body p-4 bg-glass-card">
+                                <div class="row g-4">
+                                    <!-- Left: Profile Photo & Key Info -->
+                                    <div class="col-md-4 text-center border-end-md">
+                                        <div class="position-relative d-inline-block mb-3">
+                                            <img src="@photoPath" alt="Profil Fotoğrafı" class="rounded-circle border border-4 border-primary shadow-sm" style="width: 140px; height: 140px; object-fit: cover;" />
+                                        </div>
+                                        <h5 class="fw-bold mb-1 text-gradient">@submittedData.FirstName @submittedData.LastName</h5>
+                                        <p class="badge bg-primary px-3 py-2 rounded-pill mb-1">@submittedData.Position</p>
+                                        <small class="text-muted d-block mb-2">@submittedData.Department</small>
+                                        <p class="text-muted small mb-0"><i class="bi bi-geo-alt-fill me-1"></i>@submittedData.City</p>
+                                    </div>
+
+                                    <!-- Right: Detailed Info Grid -->
+                                    <div class="col-md-8 px-md-4">
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">E-posta Adresi</label>
+                                                <span class="fw-semibold">@submittedData.Email</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">Telefon Numarası</label>
+                                                <span class="fw-semibold">@submittedData.Phone</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">Doğum Tarihi</label>
+                                                <span class="fw-semibold">@submittedData.BirthDate?.ToString("dd MMMM yyyy")</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">Medeni Durum</label>
+                                                <span class="fw-semibold">@submittedData.MaritalStatus</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">Cinsiyet</label>
+                                                <span class="fw-semibold">@submittedData.Gender</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">Çalışma Şekli</label>
+                                                <span class="fw-semibold">@submittedData.WorkType</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">İşe Giriş Tarihi</label>
+                                                <span class="fw-semibold">@submittedData.HireDate?.ToString("dd MMMM yyyy")</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="text-muted small d-block">Aylık Net Maaş</label>
+                                                <span class="fw-bold text-success">@submittedData.Salary?.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</span>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <label class="text-muted small d-block mb-1">Uzmanlık Yetenekleri</label>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    @foreach (var skill in submittedData.SelectedSkills)
+                                                    {
+                                                        <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-2 py-1 rounded">
+                                                            @skill
+                                                        </span>
+                                                    }
+                                                </div>
+                                            </div>
+                                            
+                                            @if (!string.IsNullOrEmpty(submittedData.Description))
+                                            {
+                                                <div class="col-12">
+                                                    <label class="text-muted small d-block">Kişisel Açıklama</label>
+                                                    <p class="text-muted mb-0 font-italic small bg-light p-2 rounded border border-light">"@submittedData.Description"</p>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light border-0 py-3 text-center">
+                                <p class="text-muted small mb-0">
+                                    <i class="bi bi-check-circle-fill text-success me-1"></i>
+                                    Personel veritabanına kalıcı olarak kaydedilmiştir. "Kayıtlı Personel Listesi" sekmesinden tüm kayıtları görebilirsiniz.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Registration Form Card -->
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-sm p-4 p-md-5 bg-glass-card">
+                        
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show border-0 rounded-3 mb-4 shadow-sm" role="alert">
+                                <div class="d-flex">
+                                    <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-danger"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Lütfen aşağıdaki form hatalarını düzeltin:</h6>
+                                        <ul class="mb-0 ps-3 small text-danger">
+                                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                            {
+                                                <li>@error.ErrorMessage</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <form asp-controller="Home" asp-action="SnavFormu" method="post" enctype="multipart/form-data" id="personnelForm" class="needs-validation" novalidate>
+                            
+                            <div class="row g-4">
+                                <!-- Left Column: Inputs -->
+                                <div class="col-md-8">
+                                    <div class="row g-3">
+                                        
+                                        <!-- Ad & Soyad -->
+                                        <div class="col-sm-6">
+                                            <label asp-for="FirstName" class="form-label fw-semibold">Ad <span class="text-danger">*</span></label>
+                                            <input asp-for="FirstName" class="form-control rounded-3" placeholder="Örn: Ahmet (İlk harfi büyük)" required />
+                                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="LastName" class="form-label fw-semibold">Soyad <span class="text-danger">*</span></label>
+                                            <input asp-for="LastName" class="form-control rounded-3" placeholder="Örn: Yılmaz (İlk harfi büyük)" required />
+                                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                                        </div>
+
+                                        <!-- Eposta & Telefon -->
+                                        <div class="col-sm-6">
+                                            <label asp-for="Email" class="form-label fw-semibold">E-posta <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-envelope"></i></span>
+                                                <input asp-for="Email" type="email" class="form-control rounded-end-3 border-start-0" placeholder="ahmet@domain.com" required />
+                                            </div>
+                                            <span asp-validation-for="Email" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="Phone" class="form-label fw-semibold">Telefon <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-telephone"></i></span>
+                                                <input asp-for="Phone" type="tel" class="form-control rounded-end-3 border-start-0" placeholder="Sadece sayı giriniz" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                                            </div>
+                                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                                        </div>
+
+                                        <!-- Şifre & Şifre Tekrar -->
+                                        <div class="col-sm-6">
+                                            <label asp-for="Password" class="form-label fw-semibold">Şifre <span class="text-danger">*</span> <small class="text-muted">(En az 6 karakter)</small></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-lock"></i></span>
+                                                <input asp-for="Password" type="password" class="form-control rounded-end-3 border-start-0" placeholder="••••••" required />
+                                            </div>
+                                            <span asp-validation-for="Password" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="ConfirmPassword" class="form-label fw-semibold">Şifre Tekrarı <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-lock-fill"></i></span>
+                                                <input asp-for="ConfirmPassword" type="password" class="form-control rounded-end-3 border-start-0" placeholder="••••••" required />
+                                            </div>
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                        </div>
+
+                                        <!-- Doğum Tarihi & Medeni Durum -->
+                                        <div class="col-sm-6">
+                                            <label asp-for="BirthDate" class="form-label fw-semibold">Doğum Tarihi <span class="text-danger">*</span></label>
+                                            <input asp-for="BirthDate" type="date" class="form-control rounded-3" max="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                                            <span asp-validation-for="BirthDate" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="MaritalStatus" class="form-label fw-semibold">Medeni Durum <span class="text-danger">*</span></label>
+                                            <select asp-for="MaritalStatus" class="form-select rounded-3" required>
+                                                <option value="" disabled selected>Seçiniz</option>
+                                                <option value="Bekar">Bekar</option>
+                                                <option value="Evli">Evli</option>
+                                                <option value="Boşanmış">Boşanmış</option>
+                                                <option value="Dul">Dul</option>
+                                            </select>
+                                            <span asp-validation-for="MaritalStatus" class="text-danger small"></span>
+                                        </div>
+
+                                        <!-- Şehir & Maaş -->
+                                        <div class="col-sm-6">
+                                            <label asp-for="City" class="form-label fw-semibold">Şehir <span class="text-danger">*</span></label>
+                                            <select asp-for="City" class="form-select rounded-3" required>
+                                                <option value="" disabled selected>Seçiniz</option>
+                                                <option value="İstanbul">İstanbul</option>
+                                                <option value="Ankara">Ankara</option>
+                                                <option value="İzmir">İzmir</option>
+                                                <option value="Bursa">Bursa</option>
+                                                <option value="Antalya">Antalya</option>
+                                                <option value="Adana">Adana</option>
+                                                <option value="Trabzon">Trabzon</option>
+                                                <option value="Eskişehir">Eskişehir</option>
+                                            </select>
+                                            <span asp-validation-for="City" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="Salary" class="form-label fw-semibold">Maaş (TL) <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light border-end-0">₺</span>
+                                                <input asp-for="Salary" type="number" step="0.01" min="0" class="form-control rounded-end-3 border-start-0" placeholder="Negatif değer girilemez" required />
+                                            </div>
+                                            <span asp-validation-for="Salary" class="text-danger small"></span>
+                                        </div>
+
+                                        <!-- Departman & Pozisyon -->
+                                        <div class="col-sm-6">
+                                            <label asp-for="Department" class="form-label fw-semibold">Departman <span class="text-danger">*</span></label>
+                                            <select asp-for="Department" class="form-select rounded-3" required>
+                                                <option value="" disabled selected>Seçiniz</option>
+                                                <option value="Yazılım Geliştirme">Yazılım Geliştirme</option>
+                                                <option value="İnsan Kaynakları">İnsan Kaynakları</option>
+                                                <option value="Tasarım & Kreatif">Tasarım & Kreatif</option>
+                                                <option value="Pazarlama & Satış">Pazarlama & Satış</option>
+                                                <option value="Finans & Muhasebe">Finans & Muhasebe</option>
+                                            </select>
+                                            <span asp-validation-for="Department" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="Position" class="form-label fw-semibold">Pozisyon <span class="text-danger">*</span></label>
+                                            <select asp-for="Position" class="form-select rounded-3" required>
+                                                <option value="" disabled selected>Seçiniz</option>
+                                                <option value="Yazılım Geliştirici">Yazılım Geliştirici</option>
+                                                <option value="Proje Yöneticisi">Proje Yöneticisi</option>
+                                                <option value="Sistem Analisti">Sistem Analisti</option>
+                                                <option value="DevOps Mühendisi">DevOps Mühendisi</option>
+                                                <option value="İK Uzmanı">İK Uzmanı</option>
+                                            </select>
+                                            <span asp-validation-for="Position" class="text-danger small"></span>
+                                        </div>
+
+                                        <!-- Çalışma Şekli & İşe Giriş Tarihi -->
+                                        <div class="col-sm-6">
+                                            <label asp-for="WorkType" class="form-label fw-semibold">Çalışma Şekli <span class="text-danger">*</span></label>
+                                            <select asp-for="WorkType" class="form-select rounded-3" required>
+                                                <option value="" disabled selected>Seçiniz</option>
+                                                <option value="Tam Zamanlı">Tam Zamanlı</option>
+                                                <option value="Yarı Zamanlı">Yarı Zamanlı</option>
+                                                <option value="Uzaktan">Uzaktan</option>
+                                                <option value="Serbest">Serbest (Freelance)</option>
+                                            </select>
+                                            <span asp-validation-for="WorkType" class="text-danger small"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="HireDate" class="form-label fw-semibold">İşe Giriş Tarihi <span class="text-danger">*</span></label>
+                                            <input asp-for="HireDate" type="date" class="form-control rounded-3" max="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                                            <span asp-validation-for="HireDate" class="text-danger small"></span>
+                                        </div>
+
+                                        <!-- Cinsiyet -->
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold d-block">Cinsiyet <span class="text-danger">*</span></label>
+                                            <div class="d-flex gap-4 mt-1">
+                                                <div class="form-check">
+                                                    <input asp-for="Gender" type="radio" value="Erkek" id="genderMale" class="form-check-input" required />
+                                                    <label class="form-check-label" for="genderMale">Erkek</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input asp-for="Gender" type="radio" value="Kadın" id="genderFemale" class="form-check-input" required />
+                                                    <label class="form-check-label" for="genderFemale">Kadın</label>
+                                                </div>
+                                            </div>
+                                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Right Column: Profile Picture & Skills -->
+                                <div class="col-md-4">
+                                    <!-- Avatar container -->
+                                    <div class="card p-3 border-0 bg-light bg-opacity-50 rounded-4 text-center mb-4 shadow-none">
+                                        <label class="form-label fw-semibold d-block mb-3">Profil Fotoğrafı <span class="text-danger">*</span></label>
+                                        
+                                        <div class="avatar-preview-wrapper mb-3 mx-auto">
+                                            <div class="avatar-preview rounded-circle border border-4 border-primary d-flex align-items-center justify-content-center overflow-hidden shadow-sm mx-auto position-relative" style="width: 140px; height: 140px; background-color: var(--bg);">
+                                                <img id="avatarImage" src="" alt="" class="d-none" style="width: 100%; height: 100%; object-fit: cover;" />
+                                                <i id="avatarPlaceholder" class="bi bi-person-fill display-4 text-muted"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <input asp-for="ProfilePhoto" type="file" id="ProfilePhoto" class="form-control form-control-sm rounded-3 shadow-none border" accept="image/*" required />
+                                            <span asp-validation-for="ProfilePhoto" class="text-danger small mt-1 d-block"></span>
+                                        </div>
+                                        <small class="text-muted small-text">JPG, PNG veya WEBP formatında görsel yükleyin.</small>
+                                    </div>
+
+                                    <!-- Yetenekler -->
+                                    <div class="card p-3 border-0 bg-light bg-opacity-50 rounded-4 mb-3 shadow-none">
+                                        <label class="form-label fw-semibold mb-2">Uzmanlık Yetenekleri <span class="text-danger">*</span> <small class="text-muted">(En az bir tane)</small></label>
+                                        <div class="row g-2">
+                                            @{
+                                                var skills = new List<string> { "Javascript", "C#", "SQL", "PHP", "HTML", "CSS", "Bootstrap", "ASP.NET MVC" };
+                                            }
+                                            @for (int i = 0; i < skills.Count; i++)
+                                            {
+                                                <div class="col-6">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" name="SelectedSkills" value="@skills[i]" id="skill_@i" class="form-check-input" 
+                                                               @(Model?.SelectedSkills != null && Model.SelectedSkills.Contains(skills[i]) ? "checked" : "") />
+                                                        <label class="form-check-label text-muted small fw-semibold" for="skill_@i">@skills[i]</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <span asp-validation-for="SelectedSkills" class="text-danger small mt-2 d-block"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Full Width Description -->
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label asp-for="Description" class="form-label fw-semibold mb-0">Kişisel Açıklama <small class="text-muted fw-normal">(İsteğe Bağlı)</small></label>
+                                            <span id="charCount" class="text-muted small">0 / 200 karakter</span>
+                                        </div>
+                                        <textarea asp-for="Description" id="DescriptionInput" class="form-control rounded-3" rows="3" maxlength="200" placeholder="Kendinizden kısaca bahsedin (Maksimum 200 karakter)..."></textarea>
+                                        <span asp-validation-for="Description" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Buttons Section -->
+                            <div class="row mt-4 pt-4 border-top border-light g-3 text-center">
+                                <div class="col-12 d-flex flex-wrap justify-content-center gap-3">
+                                    <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm fw-bold">
+                                        <i class="bi bi-check2-circle me-2"></i>Kaydet
+                                    </button>
+                                    
+                                    <button type="button" id="btnReset" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                                        <i class="bi bi-trash3 me-2"></i>Temizle
+                                    </button>
+
+                                    <button type="button" id="btnFillMock" class="btn btn-outline-info rounded-pill px-4 fw-semibold border-info-subtle text-info bg-info bg-opacity-10">
+                                        <i class="bi bi-magic me-2"></i>Rastgele Doldur
+                                    </button>
+
+                                    <a asp-controller="Home" asp-action="Index" class="btn btn-link text-decoration-none fw-semibold text-muted">
+                                        <i class="bi bi-arrow-left me-1"></i>Dashboard'a Dön
+                                    </a>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Personnel List Pane -->
+        <div class="tab-pane fade" id="list-pane" role="tabpanel" aria-labelledby="list-tab" tabindex="0">
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-sm p-4 p-md-5 bg-glass-card">
+                        
+                        <!-- Search and Filter Header -->
+                        <div class="row g-3 align-items-center mb-4 pb-3 border-bottom border-light">
+                            <div class="col-md-6">
+                                <h4 class="fw-bold mb-1 text-gradient">Kayıtlı Personel Veritabanı</h4>
+                                <p class="text-muted small mb-0">Toplam @personnelList.Count kayıtlı profil listeleniyor.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group rounded-pill overflow-hidden shadow-none border">
+                                    <span class="input-group-text bg-light border-0 text-muted ps-3"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="personnelSearch" class="form-control border-0 bg-light py-2" placeholder="İsim, departman veya pozisyon ile arayın..." />
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (personnelList == null || personnelList.Count == 0)
+                        {
+                            <!-- Empty State -->
+                            <div class="text-center py-5">
+                                <i class="bi bi-people text-muted display-3 d-block mb-3"></i>
+                                <h5 class="fw-bold text-muted">Kayıtlı Personel Bulunmamaktadır</h5>
+                                <p class="text-muted small">Yeni bir personel kaydetmek için lütfen "Yeni Personel Kaydı" sekmesini kullanın.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- Personnel List Grid -->
+                            <div class="row g-4" id="personnelGrid">
+                                @foreach (var person in personnelList)
+                                {
+                                    <div class="col-md-6 col-lg-6 person-card" data-search="@person.FirstName.ToLower() @person.LastName.ToLower() @person.Department.ToLower() @person.Position.ToLower() @person.City.ToLower() @person.WorkType.ToLower()">
+                                        <div class="card h-100 border border-light p-3 hover-lift shadow-none" style="background-color: var(--bg); border-radius: 1.25rem;">
+                                            <div class="d-flex align-items-start gap-3">
+                                                <img src="@person.ProfilePhotoPath" alt="Profil Fotoğrafı" class="rounded-circle border border-2 border-primary shadow-sm" style="width: 70px; height: 70px; object-fit: cover;" />
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <h6 class="fw-bold text-gradient mb-0">@person.FirstName @person.LastName</h6>
+                                                    <div class="d-flex flex-wrap gap-1 my-1">
+                                                        <span class="badge bg-primary bg-opacity-10 text-primary py-1 px-2 rounded small" style="font-size: 0.7rem;">@person.Position</span>
+                                                        <span class="badge bg-info bg-opacity-10 text-info py-1 px-2 rounded small" style="font-size: 0.7rem;">@person.Department</span>
+                                                    </div>
+                                                    
+                                                    <div class="row g-2 mt-2 pt-2 border-top border-light-subtle small text-muted">
+                                                        <div class="col-6">
+                                                            <i class="bi bi-envelope me-1"></i><span class="text-truncate d-inline-block align-middle" style="max-width: 110px;" title="@person.Email">@person.Email</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="bi bi-telephone me-1"></i><span>@person.Phone</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="bi bi-geo-alt me-1"></i><span>@person.City</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="bi bi-cash me-1"></i><span class="fw-semibold text-success">@person.Salary.ToString("C0", new System.Globalization.CultureInfo("tr-TR"))</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="bi bi-calendar-event me-1"></i><span>@person.HireDate.ToString("dd MMM yyyy")</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="bi bi-briefcase me-1"></i><span>@person.WorkType</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="bi bi-heart me-1"></i><span>@person.Gender, @person.MaritalStatus</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-2.5">
+                                                        <small class="text-muted fw-semibold d-block mb-1" style="font-size: 0.75rem;">Yetenekler:</small>
+                                                        <div class="d-flex flex-wrap gap-1">
+                                                            @foreach (var s in person.Skills.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries))
+                                                            {
+                                                                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10 py-0.5 px-1.5 rounded" style="font-size: 0.65rem;">@s</span>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    @if (!string.IsNullOrEmpty(person.Description))
+                                                    {
+                                                        <div class="mt-2 p-1.5 rounded bg-light bg-opacity-50 border border-light">
+                                                            <p class="mb-0 text-muted font-italic" style="font-size: 0.7rem; line-height: 1.2;">"@person.Description"</p>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('personnelForm');
+            const fileInput = document.getElementById('ProfilePhoto');
+            const avatarImage = document.getElementById('avatarImage');
+            const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+            const btnReset = document.getElementById('btnReset');
+            const btnFillMock = document.getElementById('btnFillMock');
+            const descriptionInput = document.getElementById('DescriptionInput');
+            const charCount = document.getElementById('charCount');
+            const personnelSearch = document.getElementById('personnelSearch');
+
+            // Custom client-side validation logic matching all user requirements
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+                
+                // Clear any existing custom errors and invalid classes
+                document.querySelectorAll('.custom-val-error').forEach(el => el.remove());
+                document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+
+                // Helper to render error messages beautifully below inputs
+                function showError(element, message) {
+                    isValid = false;
+                    element.classList.add('is-invalid');
+                    
+                    const errorSpan = document.createElement('span');
+                    errorSpan.className = 'text-danger small custom-val-error d-block mt-1';
+                    errorSpan.innerText = message;
+                    
+                    const parent = element.closest('.input-group') || element;
+                    parent.parentNode.insertBefore(errorSpan, parent.nextSibling);
+                }
+
+                // 1. Ad (First Name) validation
+                const firstName = form.querySelector('[name="FirstName"]');
+                if (!firstName.value.trim()) {
+                    showError(firstName, "Ad alanı zorunludur.");
+                } else if (firstName.value.trim()[0] !== firstName.value.trim()[0].toUpperCase()) {
+                    showError(firstName, "Ad alanının ilk harfi büyük olmalıdır.");
+                }
+
+                // 2. Soyad (Last Name) validation
+                const lastName = form.querySelector('[name="LastName"]');
+                if (!lastName.value.trim()) {
+                    showError(lastName, "Soyad alanı zorunludur.");
+                } else if (lastName.value.trim()[0] !== lastName.value.trim()[0].toUpperCase()) {
+                    showError(lastName, "Soyad alanının ilk harfi büyük olmalıdır.");
+                }
+
+                // 3. E-posta (Email) validation
+                const email = form.querySelector('[name="Email"]');
+                const emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                if (!email.value.trim()) {
+                    showError(email, "E-posta alanı zorunludur.");
+                } else if (!emailRegex.test(email.value.trim())) {
+                    showError(email, "Geçersiz e-posta adresi.");
+                }
+
+                // 4. Telefon (Phone) validation
+                const phone = form.querySelector('[name="Phone"]');
+                const phoneRegex = /^[0-9]+$/;
+                if (!phone.value.trim()) {
+                    showError(phone, "Telefon alanı zorunludur.");
+                } else if (!phoneRegex.test(phone.value.trim())) {
+                    showError(phone, "Telefon alanı sadece sayı kabul edebilir.");
+                }
+
+                // 5. Şifre (Password) validation
+                const password = form.querySelector('[name="Password"]');
+                if (!password.value) {
+                    showError(password, "Şifre alanı zorunludur.");
+                } else if (password.value.length < 6) {
+                    showError(password, "Şifre en az 6 karakter olmalıdır.");
+                }
+
+                // 6. Şifre Tekrar (ConfirmPassword) validation
+                const confirmPassword = form.querySelector('[name="ConfirmPassword"]');
+                if (!confirmPassword.value) {
+                    showError(confirmPassword, "Şifre tekrarı zorunludur.");
+                } else if (confirmPassword.value !== password.value) {
+                    showError(confirmPassword, "Şifreler eşleşmiyor.");
+                }
+
+                // 7. Doğum Tarihi (Birth Date) validation
+                const birthDate = form.querySelector('[name="BirthDate"]');
+                if (!birthDate.value) {
+                    showError(birthDate, "Doğum tarihi zorunludur.");
+                } else {
+                    const selectedDate = new Date(birthDate.value);
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    if (selectedDate > today) {
+                        showError(birthDate, "Doğum tarihi gelecek bir zaman olamaz.");
+                    }
+                }
+
+                // 8. Medeni Durum (Marital Status) validation
+                const maritalStatus = form.querySelector('[name="MaritalStatus"]');
+                if (!maritalStatus.value) {
+                    showError(maritalStatus, "Medeni durum seçimi zorunludur.");
+                }
+
+                // 9. Şehir (City) validation
+                const city = form.querySelector('[name="City"]');
+                if (!city.value) {
+                    showError(city, "Şehir seçimi zorunludur.");
+                }
+
+                // 10. Departman (Department) validation
+                const department = form.querySelector('[name="Department"]');
+                if (!department.value) {
+                    showError(department, "Departman seçimi zorunludur.");
+                }
+
+                // 11. Pozisyon (Position) validation
+                const position = form.querySelector('[name="Position"]');
+                if (!position.value) {
+                    showError(position, "Pozisyon seçimi zorunludur.");
+                }
+
+                // 12. Çalışma Şekli (Work Type) validation
+                const workType = form.querySelector('[name="WorkType"]');
+                if (!workType.value) {
+                    showError(workType, "Çalışma şekli seçimi zorunludur.");
+                }
+
+                // 13. Maaş (Salary) validation
+                const salary = form.querySelector('[name="Salary"]');
+                if (!salary.value) {
+                    showError(salary, "Maaş alanı zorunludur.");
+                } else if (parseFloat(salary.value) < 0) {
+                    showError(salary, "Maaş negatif olamaz.");
+                }
+
+                // 14. İşe Giriş Tarihi (Hire Date) validation
+                const hireDate = form.querySelector('[name="HireDate"]');
+                if (!hireDate.value) {
+                    showError(hireDate, "İşe giriş tarihi zorunludur.");
+                } else {
+                    const selectedDate = new Date(hireDate.value);
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    if (selectedDate > today) {
+                        showError(hireDate, "İşe giriş tarihi gelecek bir zaman olamaz.");
+                    }
+                }
+
+                // 15. Cinsiyet (Gender) validation
+                const genderMale = document.getElementById('genderMale');
+                const genderFemale = document.getElementById('genderFemale');
+                if (!genderMale.checked && !genderFemale.checked) {
+                    const genderContainer = genderMale.closest('.col-12');
+                    isValid = false;
+                    const errorSpan = document.createElement('span');
+                    errorSpan.className = 'text-danger small custom-val-error d-block mt-1';
+                    errorSpan.innerText = "Cinsiyet seçimi zorunludur.";
+                    genderContainer.appendChild(errorSpan);
+                }
+
+                // 16. Yetenekler (Selected Skills) validation (At least 1 checkbox checked)
+                const skillsCheckboxes = form.querySelectorAll('input[name="SelectedSkills"]:checked');
+                if (skillsCheckboxes.length === 0) {
+                    const skillsContainer = form.querySelector('input[name="SelectedSkills"]').closest('.card');
+                    isValid = false;
+                    const errorSpan = document.createElement('span');
+                    errorSpan.className = 'text-danger small custom-val-error d-block mt-1';
+                    errorSpan.innerText = "En az bir yetenek seçilmelidir.";
+                    skillsContainer.appendChild(errorSpan);
+                }
+
+                // 17. Profil Fotoğrafı (Profile Photo) validation
+                if (fileInput.files.length === 0) {
+                    showError(fileInput, "Profil fotoğrafı zorunludur.");
+                }
+
+                // 18. Açıklama (Description) validation (Optional, max 200 chars)
+                const description = form.querySelector('[name="Description"]');
+                if (description && description.value.length > 200) {
+                    showError(description, "Açıklama alanı en fazla 200 karakter olabilir.");
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    // Focus on the first invalid field
+                    const firstInvalid = form.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                    }
+                }
+            });
+
+            // Character counter for Description textarea
+            if (descriptionInput && charCount) {
+                const updateCharCount = () => {
+                    const len = descriptionInput.value.length;
+                    charCount.textContent = `${len} / 200 karakter`;
+                    if (len >= 180) {
+                        charCount.className = 'text-danger small fw-bold';
+                    } else {
+                        charCount.className = 'text-muted small';
+                    }
+                };
+                descriptionInput.addEventListener('input', updateCharCount);
+                updateCharCount(); // initial call
+            }
+
+            // Client side Search filter for personnel profiles list
+            if (personnelSearch) {
+                personnelSearch.addEventListener('keyup', function() {
+                    const query = this.value.toLowerCase().trim();
+                    const cards = document.querySelectorAll('.person-card');
+                    
+                    cards.forEach(card => {
+                        const searchData = card.getAttribute('data-search');
+                        if (searchData && searchData.includes(query)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Image Preview Handler
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        avatarImage.src = e.target.result;
+                        avatarImage.classList.remove('d-none');
+                        avatarPlaceholder.classList.add('d-none');
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    resetPreview();
+                }
+            });
+
+            // Helper to reset image preview
+            function resetPreview() {
+                avatarImage.src = '';
+                avatarImage.classList.add('d-none');
+                avatarPlaceholder.classList.remove('d-none');
+            }
+
+            // Reset Button Event Handler
+            btnReset.addEventListener('click', () => {
+                // Form reset
+                form.reset();
+                
+                // Clear file input value explicitly
+                fileInput.value = '';
+                
+                // Reset custom preview elements
+                resetPreview();
+                
+                // Reset character count
+                if (descriptionInput && charCount) {
+                    charCount.textContent = '0 / 200 karakter';
+                    charCount.className = 'text-muted small';
+                }
+
+                // Clear ASP.NET Validation styles & messages
+                document.querySelectorAll('.field-validation-error').forEach(el => {
+                    el.innerHTML = '';
+                });
+                document.querySelectorAll('.is-invalid').forEach(el => {
+                    el.classList.remove('is-invalid');
+                });
+            });
+
+            // Mock Data Filler Event Handler (Creates robust mock data meeting all strict criteria)
+            btnFillMock.addEventListener('click', () => {
+                const names = ['Kıvanç', 'Bora', 'Alper', 'Ezgi', 'Aslı', 'Cem', 'Selin', 'Ebru'];
+                const surnames = ['Tatlıtuğ', 'Yılmaz', 'Demir', 'Kaya', 'Şahin', 'Öztürk', 'Çelik', 'Koç'];
+                const cities = ['İstanbul', 'Ankara', 'İzmir', 'Bursa', 'Antalya'];
+                const departments = ['Yazılım Geliştirme', 'İnsan Kaynakları', 'Tasarım & Kreatif', 'Pazarlama & Satış', 'Finans & Muhasebe'];
+                const positions = ['Yazılım Geliştirici', 'Proje Yöneticisi', 'Sistem Analisti', 'DevOps Mühendisi', 'İK Uzmanı'];
+                const workTypes = ['Tam Zamanlı', 'Yarı Zamanlı', 'Uzaktan'];
+                
+                const randomIdx = Math.floor(Math.random() * names.length);
+                const randomName = names[randomIdx];
+                const randomSurname = surnames[Math.floor(Math.random() * surnames.length)];
+                
+                // Set text & select inputs
+                document.querySelector('input[name="FirstName"]').value = randomName;
+                document.querySelector('input[name="LastName"]').value = randomSurname;
+                document.querySelector('input[name="Email"]').value = `${randomName.toLowerCase()}.${randomSurname.toLowerCase()}@@example.com`;
+                document.querySelector('input[name="Phone"]').value = '05' + Math.floor(100000000 + Math.random() * 900000000);
+                
+                document.querySelector('input[name="Password"]').value = 'P@@ssword123';
+                document.querySelector('input[name="ConfirmPassword"]').value = 'P@@ssword123';
+                
+                // Validate Dates: Ensure BirthDate and HireDate are in the PAST (no future dates)
+                document.querySelector('input[name="BirthDate"]').value = '1995-10-25';
+                document.querySelector('select[name="MaritalStatus"]').value = 'Bekar';
+                document.querySelector('select[name="City"]').value = cities[Math.floor(Math.random() * cities.length)];
+                document.querySelector('input[name="Salary"]').value = Math.floor(45000 + Math.random() * 25000); // positive salary
+                
+                document.querySelector('select[name="Department"]').value = departments[Math.floor(Math.random() * departments.length)];
+                document.querySelector('select[name="Position"]').value = positions[Math.floor(Math.random() * positions.length)];
+                document.querySelector('select[name="WorkType"]').value = workTypes[Math.floor(Math.random() * workTypes.length)];
+                document.querySelector('input[name="HireDate"]').value = new Date().toISOString().split('T')[0]; // today is the max allowed (past/present)
+                
+                // Select Random Gender (Male for Male names, Female for Female names)
+                const isFemale = ['Ezgi', 'Aslı', 'Selin', 'Ebru'].includes(randomName);
+                if (isFemale) {
+                    document.getElementById('genderFemale').checked = true;
+                } else {
+                    document.getElementById('genderMale').checked = true;
+                }
+
+                // Check Random Skills (ensure at least 1)
+                const skillsCheckboxes = document.querySelectorAll('input[name="SelectedSkills"]');
+                skillsCheckboxes.forEach(cb => cb.checked = false); // clear first
+                const numSkills = 2 + Math.floor(Math.random() * 3);
+                const shuffled = Array.from(skillsCheckboxes).sort(() => 0.5 - Math.random());
+                for (let i = 0; i < numSkills; i++) {
+                    shuffled[i].checked = true;
+                }
+
+                // Description (keep under 200 chars)
+                const descText = 'Yaratıcı problem çözme becerilerine sahip, verimli C# ve ASP.NET projeleri geliştiren takım çalışması ve çevik metodoloji hayranı yazılım uzmanı.';
+                document.querySelector('textarea[name="Description"]').value = descText;
+                
+                if (descriptionInput && charCount) {
+                    charCount.textContent = `${descText.length} / 200 karakter`;
+                    charCount.className = 'text-muted small';
+                }
+
+                // Programmatically Create a valid 1x1 Mock transparent PNG file so validation passes instantly!
+                try {
+                    const mockBlob = new Blob([
+                        new Uint8Array([
+                            137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 200, 137, 0, 0, 0, 13, 73, 68, 65, 84, 120, 156, 99, 96, 0, 0, 0, 2, 0, 1, 73, 175, 168, 116, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130
+                        ])
+                    ], { type: 'image/png' });
+                    const mockFile = new File([mockBlob], 'profil_mock.png', { type: 'image/png' });
+                    
+                    const container = new DataTransfer();
+                    container.items.add(mockFile);
+                    fileInput.files = container.files;
+                    
+                    // Trigger preview update
+                    const event = new Event('change');
+                    fileInput.dispatchEvent(event);
+                } catch (e) {
+                    console.error("Mock image load failed: ", e);
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    .bg-gradient-header {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    
+    .bg-glass-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .hover-lift {
+        transition: var(--transition);
+    }
+    .hover-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow) !important;
+        background-color: var(--surface) !important;
+    }
+    
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Small layout helper for md screens */
+    @@media (min-width: 768px) {
+        .border-end-md {
+            border-right: 1px solid var(--border) !important;
+        }
+    }
+    
+    /* Specific overrides for Dark Mode */
+    [data-theme="dark"] .bg-glass-card {
+        background: rgba(30, 41, 59, 0.65) !important;
+        backdrop-filter: blur(12px);
+    }
+    
+    [data-theme="dark"] .card-footer {
+        background: rgba(15, 23, 42, 0.5) !important;
+        color: var(--text-muted) !important;
+    }
+    
+    [data-theme="dark"] .bg-light {
+        background-color: rgba(15, 23, 42, 0.4) !important;
+        color: var(--text) !important;
+    }
+
+    [data-theme="dark"] .input-group-text, 
+    [data-theme="dark"] .form-control,
+    [data-theme="dark"] .form-select {
+        background-color: #0f172a !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        color: #f1f5f9 !important;
+    }
+
+    [data-theme="dark"] .form-check-input {
+        background-color: #0f172a !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    [data-theme="dark"] .form-check-input:checked {
+        background-color: var(--primary) !important;
+        border-color: var(--primary) !important;
+    }
+
+    [data-theme="dark"] .font-italic {
+        color: #94a3b8 !important;
+    }
+    
+    .small-text {
+        font-size: 0.75rem;
+    }
+</style>
