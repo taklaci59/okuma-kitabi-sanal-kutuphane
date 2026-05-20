@@ -179,12 +179,12 @@
                                         <!-- Ad & Soyad -->
                                         <div class="col-sm-6">
                                             <label asp-for="FirstName" class="form-label fw-semibold">Ad <span class="text-danger">*</span></label>
-                                            <input asp-for="FirstName" class="form-control rounded-3" placeholder="Örn: Ahmet (İlk harfi büyük)" required />
+                                            <input asp-for="FirstName" class="form-control rounded-3" placeholder="Örn: Ahmet" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);" required />
                                             <span asp-validation-for="FirstName" class="text-danger small"></span>
                                         </div>
                                         <div class="col-sm-6">
                                             <label asp-for="LastName" class="form-label fw-semibold">Soyad <span class="text-danger">*</span></label>
-                                            <input asp-for="LastName" class="form-control rounded-3" placeholder="Örn: Yılmaz (İlk harfi büyük)" required />
+                                            <input asp-for="LastName" class="form-control rounded-3" placeholder="Örn: Yılmaz" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);" required />
                                             <span asp-validation-for="LastName" class="text-danger small"></span>
                                         </div>
 
@@ -555,16 +555,16 @@
                 const firstName = form.querySelector('[name="FirstName"]');
                 if (!firstName.value.trim()) {
                     showError(firstName, "Ad alanı zorunludur.");
-                } else if (firstName.value.trim()[0] !== firstName.value.trim()[0].toUpperCase()) {
-                    showError(firstName, "Ad alanının ilk harfi büyük olmalıdır.");
+                } else {
+                    firstName.value = firstName.value.trim().charAt(0).toUpperCase() + firstName.value.trim().slice(1);
                 }
 
                 // 2. Soyad (Last Name) validation
                 const lastName = form.querySelector('[name="LastName"]');
                 if (!lastName.value.trim()) {
                     showError(lastName, "Soyad alanı zorunludur.");
-                } else if (lastName.value.trim()[0] !== lastName.value.trim()[0].toUpperCase()) {
-                    showError(lastName, "Soyad alanının ilk harfi büyük olmalıdır.");
+                } else {
+                    lastName.value = lastName.value.trim().charAt(0).toUpperCase() + lastName.value.trim().slice(1);
                 }
 
                 // 3. E-posta (Email) validation

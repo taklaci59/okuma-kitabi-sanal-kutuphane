@@ -63,21 +63,17 @@ namespace okumatakibisanalkutuphane.Controllers
                 ModelState.AddModelError("SelectedSkills", "En az bir yetenek seçilmelidir.");
             }
 
-            // Ad ve Soyad ilk harf kontrolü ve otomatik düzeltilmesi
+            // Ad ve Soyad ilk harflerini otomatik olarak büyük yap
             if (!string.IsNullOrEmpty(model.FirstName) && model.FirstName.Length > 0)
             {
-                if (!char.IsUpper(model.FirstName.Trim()[0]))
-                {
-                    ModelState.AddModelError("FirstName", "Ad alanının ilk harfi büyük olmalıdır.");
-                }
+                var trimmed = model.FirstName.Trim();
+                model.FirstName = char.ToUpper(trimmed[0]) + (trimmed.Length > 1 ? trimmed.Substring(1) : "");
             }
 
             if (!string.IsNullOrEmpty(model.LastName) && model.LastName.Length > 0)
             {
-                if (!char.IsUpper(model.LastName.Trim()[0]))
-                {
-                    ModelState.AddModelError("LastName", "Soyad alanının ilk harfi büyük olmalıdır.");
-                }
+                var trimmed = model.LastName.Trim();
+                model.LastName = char.ToUpper(trimmed[0]) + (trimmed.Length > 1 ? trimmed.Substring(1) : "");
             }
 
             if (model.ProfilePhoto == null || model.ProfilePhoto.Length == 0)

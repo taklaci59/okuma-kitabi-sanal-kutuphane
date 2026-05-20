@@ -33,13 +33,20 @@ Premium tasarımı, temaya duyarlı dinamik grafikleri ve gelişmiş raporlama y
 
 ## 📸 Ekran Görüntüleri
 
-#### 1. Dashboard & İstatistikler
-![Dashboard Görünümü](screenshots/dashboard.png)
-*(Okuma istatistikleri, haftalık performans grafiği ve aktif kitapların takibi)*
+> [!TIP]
+> Projenizi GitHub'a yüklemeden önce kendi ekran görüntülerinizi alıp `wwwroot/images/` klasörüne ekleyerek aşağıdaki yolları güncelleyebilirsiniz.
 
-#### 2. Portfolyo Sayfası
-![Portfolyo Görünümü](screenshots/portfolio_preview.png)
-*(Kıvanç'ın geliştirdiği 6 adet ASP.NET Core projesinin tek bir çatı altında listelendiği portfolyo sayfası)*
+#### 1. Dashboard (Açık Tema)
+![Dashboard Açık Tema](https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&q=80&w=800)
+*(Açık tema altında dinamik Chart.js grafiği, istatistik kartları ve aktif okunan kitaplar)*
+
+#### 2. Dashboard (Karanlık Tema)
+![Dashboard Karanlık Tema](https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&q=80&w=800)
+*(Tek tıkla geçiş yapılan koyu tema tasarımı ve temaya duyarlı koyu mod grafiği)*
+
+#### 3. Excel ve PDF Çıktı Butonları
+![Raporlama Butonları](https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800)
+*(Dashboard üzerinde tek tıklamayla indirilebilen profesyonel veri raporlama menüsü)*
 
 ---
 
